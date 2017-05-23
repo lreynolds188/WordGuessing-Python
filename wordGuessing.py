@@ -1,7 +1,10 @@
+import os
+import sys
+
 class Game():
 
     def __init__(self):
-        self.filename = 'dictionary.txt';
+        self.filename = '\dictionary.txt';
         self.dict, self.guessedLetters, self.matchingDict = [], [], [];
         self.guessedLetter, self.secretWord = "", "";
         self.remainingGuesses, self.largestListId, self.wordLength = 0, 0, 0;
@@ -33,14 +36,19 @@ class Game():
                         self.secretWord = self.secretWord[:n] + temp[n] + self.secretWord[n+1:];
 
     def load(self):
-        file = open(self.filename, 'r');
-        for value in file:
-            word = value.rstrip();
-            self.dict[len(word)].append(word);
+        try:
+            if self.filename[1] not in self.chars:
+                print("Invalid file name");
+            file = open(os.getcwd() + self.filename, 'r');
+            for value in file:
+                word = value.rstrip();
+                self.dict[len(word)].append(word);
+        except FileNotFoundError:
+            print("File not found");
 
     def get_valid_length(self):
         while True:
-            wordLength = input("Enter a word length (0-30): ");
+            wordLength = input("Enter a word length: ");
             try:
                 if self.dict[int(wordLength)]:
                     return wordLength;
@@ -175,4 +183,4 @@ while True:
     if(game.new_game()):
         continue;
     else:
-        exit();
+        sys.exit();
